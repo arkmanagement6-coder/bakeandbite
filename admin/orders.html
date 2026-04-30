@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders | Admin</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 260px; background: var(--primary); color: white; padding: 30px 20px; }
+        .admin-sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); border-radius: 8px; margin-bottom: 5px; }
+        .admin-sidebar a:hover, .admin-sidebar a.active { background: rgba(255,255,255,0.1); color: white; }
+        .admin-main { flex: 1; padding: 40px; background: #f4f4f4; }
+        .content-card { background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .order-row { border-bottom: 1px solid #eee; }
+        .order-row:hover { background: #fcfcfc; }
+        .status-select { padding: 6px; border-radius: 4px; border: 1px solid #ddd; font-size: 0.85rem; outline: none; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h2 style="color: white; margin-bottom: 40px; font-size: 1.5rem;">B&B Admin</h2>
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="products.html">Products</a>
+                <a href="orders.html" class="active">Orders</a>
+                <a href="enquiries.html">Custom Enquiries</a>
+                <a href="categories.html">Categories</a>
+                <a href="coupons.html">Coupons</a>
+                <a href="../index.html" style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">View Store</a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <div class="flex justify-between align-center" style="margin-bottom: 40px;">
+                <h1>Order Management</h1>
+                <div class="flex" style="gap: 15px;">
+                    <select id="filter-status" class="status-select" style="padding: 10px;">
+                        <option value="All">All Statuses</option>
+                        <option>New Order</option>
+                        <option>Accepted</option>
+                        <option>Preparing</option>
+                        <option>Out for Delivery</option>
+                        <option>Delivered</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid #eee; color: var(--text-muted); font-size: 0.9rem;">
+                            <th style="padding: 12px 0;">Order ID & Date</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-list">
+                        <!-- Orders injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import Store from '../js/store.js';
+
+        const statusOptions = ['New Order', 'Accepted', 'Preparing', 'Out for Delivery', 'Delivered', 'Cancelled', 'Refunded'];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrders();
+            document.getElementById('filter-status').addEventListener('change', renderOrders);
+        });
+
+        function renderOrders() {
+            const orders = Store.getOrders();
+            const filter = document.getElementById('filter-status').value;
+            const list = document.getElementById('admin-orders-list');
+            
+            const filteredOrders = filter === 'All' ? orders : orders.filter(o => o.status === filter);
+
+            list.innerHTML = filteredOrders.reverse().map(order => `
+                <tr class="order-row">
+                    <td style="padding: 20px 0;">
+                        <div style="font-weight: 700;">${order.id}</div>
+                        <div style="font-size: 0.8rem; color: #999;">${new Date(order.date).toLocaleString()}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 600;">${order.customer.name}</div>
+                        <div style="font-size: 0.8rem; color: #666;">${order.customer.mobile}</div>
+                    </td>
+                    <td>
+                        <div style="font-size: 0.85rem;">
+                            ${order.items.map(item => `• ${item.name} x ${item.quantity}`).join('<br>')}
+                        </div>
+                    </td>
+                    <td style="font-weight: 700;">₹${order.total}</td>
+                    <td>
+                        <div style="font-size: 0.85rem;">${order.paymentMethod}</div>
+                        <div style="font-size: 0.75rem; color: ${order.paymentStatus === 'Paid Online' ? 'var(--success)' : '#999'}; font-weight: 600;">
+                            ${order.paymentStatus}
+                        </div>
+                    </td>
+                    <td>
+                        <select class="status-select change-status" data-id="${order.id}">
+                            ${statusOptions.map(opt => `<option value="${opt}" ${order.status === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
+
+            attachStatusEvents();
+        }
+
+        function attachStatusEvents() {
+            document.querySelectorAll('.change-status').forEach(select => {
+                select.onchange = (e) => {
+                    const id = select.getAttribute('data-id');
+                    const newStatus = e.target.value;
+                    
+                    let orders = Store.getOrders();
+                    const orderIndex = orders.findIndex(o => o.id === id);
+                    if (orderIndex !== -1) {
+                        orders[orderIndex].status = newStatus;
+                        Store.set('ORDERS', orders);
+                        alert(`Order ${id} status updated to ${newStatus}`);
+                    }
+                };
+            });
+        }
+    </script>
+</body>
+</html>

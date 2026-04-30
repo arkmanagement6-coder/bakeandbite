@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Bake & Bite</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); outline: none; background: white; }
+        .payment-option { border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 15px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; }
+        .payment-option:hover { border-color: var(--primary); }
+        .payment-option.active { border-color: var(--primary); background: rgba(74, 44, 42, 0.05); }
+    </style>
+</head>
+<body>
+    <div id="header-root"></div>
+
+    <main class="section">
+        <div class="container">
+            <h2 style="margin-bottom: 40px;">Checkout</h2>
+
+            <form id="checkout-form" class="flex" style="gap: 60px;">
+                <!-- Delivery Info -->
+                <div style="flex: 2;">
+                    <div class="glass-card" style="margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 25px;">Delivery Details</h3>
+                        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="cust-name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="tel" id="cust-mobile" required placeholder="9876543210">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="cust-email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Address</label>
+                            <textarea id="cust-address" required rows="3" placeholder="Flat No, Building, Street Name..."></textarea>
+                        </div>
+                        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-group">
+                                <label>Pincode</label>
+                                <input type="text" id="cust-pincode" required placeholder="400001">
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" id="cust-city" required value="Sweet City" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 25px;">Payment Method</h3>
+                        <div class="payment-options">
+                            <div class="payment-option active" data-method="Online">
+                                <input type="radio" name="payment" checked>
+                                <span>Online Payment (UPI, Cards, Netbanking)</span>
+                            </div>
+                            <div class="payment-option" data-method="COD">
+                                <input type="radio" name="payment">
+                                <span>Cash on Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary (Small) -->
+                <div style="flex: 1;">
+                    <div class="glass-card" style="position: sticky; top: 120px;">
+                        <h3 style="margin-bottom: 25px;">Your Order</h3>
+                        <div id="checkout-summary-items" style="margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
+                            <!-- Items injected here -->
+                        </div>
+                        <div style="border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                            <div class="flex justify-between" style="font-weight: 800; font-size: 1.2rem; color: var(--primary);">
+                                <span>Total Payable</span>
+                                <span id="final-total">₹0</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 30px; padding: 15px;">Place Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Simulated Razorpay Modal -->
+    <div id="razorpay-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+        <div class="glass-card" style="background: white; width: 400px; padding: 0; overflow: hidden; border-radius: 8px;">
+            <div style="background: #3395FF; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="color: white; font-family: var(--font-sans);">Bake & Bite Checkout</h4>
+                <img src="https://razorpay.com/favicon.png" style="width: 24px; filter: brightness(0) invert(1);">
+            </div>
+            <div style="padding: 30px; text-align: center;">
+                <p style="margin-bottom: 20px; font-weight: 600;">Paying ₹<span id="payment-amount">0</span></p>
+                <div style="background: #F8F9FA; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+                    <div style="margin-bottom: 15px; text-align: left; font-size: 0.9rem; color: #666;">Select UPI App</div>
+                    <div class="flex justify-between" style="gap: 15px;">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-google-pay-2038779-1721670.png" style="width: 40px;">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-phonepe-2038780-1721671.png" style="width: 40px;">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-226448.png" style="width: 40px;">
+                    </div>
+                </div>
+                <button id="simulate-success" class="btn btn-primary" style="width: 100%; background: #3395FF; border: none;">Simulate Successful Payment</button>
+                <button id="simulate-fail" style="background: transparent; border: none; color: #666; margin-top: 15px; font-size: 0.8rem; cursor: pointer;">Cancel Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-root"></div>
+
+    <script type="module" src="js/checkout.js"></script>
+</body>
+</html>

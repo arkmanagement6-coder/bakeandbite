@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Bake & Bite</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="header-root"></div>
+
+    <main>
+        <!-- About Hero -->
+        <section class="section" style="background: var(--primary); color: white; text-align: center; padding: 100px 0;">
+            <div class="container">
+                <h1 style="color: white; font-size: 4rem; margin-bottom: 20px;">Our Story</h1>
+                <p style="font-size: 1.2rem; opacity: 0.8; max-width: 800px; margin: 0 auto;">Crafting sweet moments since 2015. Every bite tells a story of passion, quality, and freshly baked goodness.</p>
+            </div>
+        </section>
+
+        <!-- Our Mission -->
+        <section class="section">
+            <div class="container flex align-center" style="gap: 80px;">
+                <div style="flex: 1;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 30px;">Baking with Love & Integrity</h2>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">At Bake & Bite, we believe that the best cakes are made with simple, high-quality ingredients and a lot of heart. What started as a small kitchen experiment has now grown into a beloved neighborhood bakery delivering across the city.</p>
+                    <p style="color: var(--text-muted);">Our mission is to bring a smile to every customer's face with treats that look as good as they taste. From classic recipes to modern fusion flavors, our bakers are constantly innovating.</p>
+                </div>
+                <div style="flex: 1;">
+                    <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800" alt="Baking Process" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+                </div>
+            </div>
+        </section>
+
+        <!-- Quality Promise -->
+        <section class="section" style="background: var(--bg-white);">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 60px;">Our Quality Promise</h2>
+                <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 40px;">
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: var(--bg-cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <h3>Fresh Ingredients</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">We use farm-fresh milk, premium Belgian chocolate, and seasonal fruits for every batch.</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: var(--bg-cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <h3>Hygiene & Safety</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">Our state-of-the-art kitchen follows strict safety protocols and touch-less delivery practices.</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: var(--bg-cream); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                        <h3>Same-day Delivery</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">Forgot a birthday? No worries! We offer 4-hour delivery for our best-selling items.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script type="module">
+        import { renderHeader, renderFooter } from './js/components/common.js';
+        document.getElementById('header-root').appendChild(renderHeader());
+        document.getElementById('footer-root').appendChild(renderFooter());
+    </script>
+</body>
+</html>

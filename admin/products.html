@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products | Admin</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 260px; background: var(--primary); color: white; padding: 30px 20px; }
+        .admin-sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); border-radius: 8px; margin-bottom: 5px; }
+        .admin-sidebar a:hover, .admin-sidebar a.active { background: rgba(255,255,255,0.1); color: white; }
+        .admin-main { flex: 1; padding: 40px; background: #f4f4f4; }
+        .content-card { background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 40px; border-radius: 12px; width: 600px; max-height: 90vh; overflow-y: auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; outline: none; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h2 style="color: white; margin-bottom: 40px; font-size: 1.5rem;">B&B Admin</h2>
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="products.html" class="active">Products</a>
+                <a href="orders.html">Orders</a>
+                <a href="enquiries.html">Custom Enquiries</a>
+                <a href="categories.html">Categories</a>
+                <a href="coupons.html">Coupons</a>
+                <a href="../index.html" style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">View Store</a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <div class="flex justify-between align-center" style="margin-bottom: 40px;">
+                <h1>Product Management</h1>
+                <button id="add-product-btn" class="btn btn-primary">+ Add New Product</button>
+            </div>
+
+            <div class="content-card">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid #eee; color: var(--text-muted); font-size: 0.9rem;">
+                            <th style="padding: 12px 0;">Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-products-list">
+                        <!-- Products injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title" style="margin-bottom: 30px;">Add New Product</h2>
+            <form id="product-form">
+                <input type="hidden" id="p-id">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="p-name" required>
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="p-category" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Flavor</label>
+                        <input type="text" id="p-flavor" required>
+                    </div>
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Base Price (₹)</label>
+                        <input type="number" id="p-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Discount Price (₹)</label>
+                        <input type="number" id="p-discount">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="p-image" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="p-desc" rows="3" required></textarea>
+                </div>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="p-stock" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Eggless Option</label>
+                        <select id="p-eggless">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex" style="gap: 15px; margin-top: 20px;">
+                    <button type="button" class="btn btn-outline" id="close-modal" style="flex: 1;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import Store from '../js/store.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            initModal();
+        });
+
+        function renderProducts() {
+            const products = Store.getProducts();
+            const list = document.getElementById('admin-products-list');
+            
+            list.innerHTML = products.map(product => `
+                <tr style="border-bottom: 1px solid #f9f9f9;">
+                    <td style="padding: 15px 0;">
+                        <div class="flex align-center" style="gap: 12px;">
+                            <img src="${product.image}" style="width: 40px; height: 40px; border-radius: 4px; object-fit: cover;">
+                            <div style="font-weight: 600;">${product.name}</div>
+                        </div>
+                    </td>
+                    <td>${product.category}</td>
+                    <td>
+                        <div style="font-weight: 700;">₹${product.discountPrice}</div>
+                        <div style="font-size: 0.8rem; text-decoration: line-through; color: #999;">₹${product.price}</div>
+                    </td>
+                    <td>${product.stock}</td>
+                    <td><span style="background: ${product.active ? 'var(--success)' : '#999'}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${product.active ? 'Active' : 'Inactive'}</span></td>
+                    <td>
+                        <div class="flex" style="gap: 10px;">
+                            <button class="edit-btn" data-id="${product.id}" style="border: none; background: transparent; color: #3395FF; cursor: pointer;">Edit</button>
+                            <button class="delete-btn" data-id="${product.id}" style="border: none; background: transparent; color: var(--error); cursor: pointer;">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            attachListEvents();
+        }
+
+        function initModal() {
+            const modal = document.getElementById('product-modal');
+            const addBtn = document.getElementById('add-product-btn');
+            const closeBtn = document.getElementById('close-modal');
+            const form = document.getElementById('product-form');
+            const catSelect = document.getElementById('p-category');
+
+            // Populate categories
+            const categories = Store.getCategories();
+            catSelect.innerHTML = categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+
+            addBtn.onclick = () => {
+                document.getElementById('modal-title').innerText = 'Add New Product';
+                form.reset();
+                document.getElementById('p-id').value = '';
+                modal.style.display = 'flex';
+            };
+
+            closeBtn.onclick = () => modal.style.display = 'none';
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const product = {
+                    id: document.getElementById('p-id').value || null,
+                    name: document.getElementById('p-name').value,
+                    category: document.getElementById('p-category').value,
+                    flavor: document.getElementById('p-flavor').value,
+                    price: parseInt(document.getElementById('p-price').value),
+                    discountPrice: parseInt(document.getElementById('p-discount').value) || parseInt(document.getElementById('p-price').value),
+                    image: document.getElementById('p-image').value,
+                    description: document.getElementById('p-desc').value,
+                    stock: parseInt(document.getElementById('p-stock').value),
+                    eggless: document.getElementById('p-eggless').value === 'true',
+                    active: true,
+                    rating: 4.5
+                };
+                Store.saveProduct(product);
+                modal.style.display = 'none';
+                renderProducts();
+            };
+        }
+
+        function attachListEvents() {
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.onclick = () => {
+                    const id = btn.getAttribute('data-id');
+                    const p = Store.getProductById(id);
+                    
+                    document.getElementById('modal-title').innerText = 'Edit Product';
+                    document.getElementById('p-id').value = p.id;
+                    document.getElementById('p-name').value = p.name;
+                    document.getElementById('p-category').value = p.category;
+                    document.getElementById('p-flavor').value = p.flavor;
+                    document.getElementById('p-price').value = p.price;
+                    document.getElementById('p-discount').value = p.discountPrice;
+                    document.getElementById('p-image').value = p.image;
+                    document.getElementById('p-desc').value = p.description;
+                    document.getElementById('p-stock').value = p.stock;
+                    document.getElementById('p-eggless').value = p.eggless.toString();
+                    
+                    document.getElementById('product-modal').style.display = 'flex';
+                };
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.onclick = () => {
+                    if (confirm('Are you sure you want to delete this product?')) {
+                        Store.deleteProduct(btn.getAttribute('data-id'));
+                        renderProducts();
+                    }
+                };
+            });
+        }
+    </script>
+</body>
+</html>

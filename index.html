@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bake & Bite | Fresh Cakes & Pastries Delivered</title>
+    <meta name="description" content="Order fresh cakes, pastries, cupcakes and breads online. Same day delivery available. Premium artisan bakery at your doorstep.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="header-root"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" style="position: relative; height: 80vh; overflow: hidden; background: #2D1B1A;">
+            <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=1600" alt="Fresh Bakery" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+            <div class="container" style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; color: white;">
+                <h1 class="animate-fade-up" style="font-size: 4rem; color: white; margin-bottom: 20px; line-height: 1.1;">Fresh Cakes, Pastries & <br>Bakery Items Delivered</h1>
+                <p class="animate-fade-up" style="font-size: 1.2rem; margin-bottom: 40px; max-width: 600px; opacity: 0.9; animation-delay: 0.2s;">Indulge in our handcrafted treats made with love and the finest ingredients. Delivered fresh to your doorstep.</p>
+                <div class="animate-fade-up" style="display: flex; gap: 20px; animation-delay: 0.4s;">
+                    <a href="products.html" class="btn btn-accent">Order Now</a>
+                    <a href="custom-order.html" class="btn btn-outline" style="border-color: white; color: white;">Custom Cake Order</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Bar Section -->
+        <section style="background: var(--bg-white); padding: 40px 0; margin-top: -40px; position: relative; z-index: 10;">
+            <div class="container">
+                <div class="glass-card" style="display: flex; gap: 20px; align-items: center; padding: 15px 30px;">
+                    <div style="flex: 1;">
+                        <input type="text" id="home-search" placeholder="Search Cakes, Cookies, Breads..." style="width: 100%; padding: 12px; border: none; background: transparent; font-size: 1.1rem; outline: none;">
+                    </div>
+                    <button class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Cards -->
+        <section class="section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 50px;">Shop by Category</h2>
+                <div id="category-grid" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                    <!-- Categories will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Selling Products -->
+        <section class="section" style="background: #F8F1EA;">
+            <div class="container">
+                <div class="flex justify-between align-center" style="margin-bottom: 40px;">
+                    <h2>Best Selling Products</h2>
+                    <a href="products.html" style="color: var(--accent); font-weight: 600;">View All →</a>
+                </div>
+                <div id="best-sellers-grid" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <!-- Products will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Offers -->
+        <section class="section">
+            <div class="container">
+                <div class="glass-card" style="background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; display: flex; align-items: center; justify-content: space-between; padding: 60px; overflow: hidden; position: relative;">
+                    <div style="max-width: 500px; position: relative; z-index: 1;">
+                        <h2 style="color: white; margin-bottom: 15px;">Today's Special Offer</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 25px; opacity: 0.9;">Get 20% off on all Cupcakes! Use code <span style="font-weight: 700; color: var(--accent);">SWEET20</span> at checkout.</p>
+                        <a href="products.html?category=Cupcakes" class="btn btn-accent">Shop Cupcakes</a>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=500" alt="Cupcakes" style="width: 300px; height: 300px; object-fit: cover; border-radius: 50%; border: 10px solid rgba(255,255,255,0.1);">
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Cake CTA -->
+        <section class="section" style="background: var(--bg-white);">
+            <div class="container flex align-center" style="gap: 60px;">
+                <div style="flex: 1;">
+                    <img src="https://images.unsplash.com/photo-1535141192574-5d4897c826a0?w=800" alt="Custom Cake" style="border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+                </div>
+                <div style="flex: 1;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Dream It, We Bake It</h2>
+                    <p style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text-muted);">Looking for something unique? Our expert bakers can create the perfect custom cake for your special occasion. Choose your flavor, design, and size.</p>
+                    <ul style="margin-bottom: 40px;">
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Personalized Designs</li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Multiple Flavor Options</li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Same-day Enquiry Response</li>
+                    </ul>
+                    <a href="custom-order.html" class="btn btn-primary">Enquire for Custom Cake</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Reviews -->
+        <section class="section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 50px;">What Our Customers Say</h2>
+                <div id="reviews-grid" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                    <!-- Reviews will be injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script type="module" src="js/home.js"></script>
+</body>
+</html>

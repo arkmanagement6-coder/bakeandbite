@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Bake & Bite</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 260px; background: var(--primary); color: white; padding: 30px 20px; }
+        .admin-sidebar a { display: block; padding: 12px 20px; color: rgba(255,255,255,0.7); border-radius: 8px; margin-bottom: 5px; }
+        .admin-sidebar a:hover, .admin-sidebar a.active { background: rgba(255,255,255,0.1); color: white; }
+        .admin-main { flex: 1; padding: 40px; background: #f4f4f4; }
+        .stat-card { background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow-sm); }
+        .stat-value { font-size: 1.8rem; font-weight: 800; margin: 10px 0; color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h2 style="color: white; margin-bottom: 40px; font-size: 1.5rem;">B&B Admin</h2>
+            <nav>
+                <a href="index.html" class="active">Dashboard</a>
+                <a href="products.html">Products</a>
+                <a href="orders.html">Orders</a>
+                <a href="enquiries.html">Custom Enquiries</a>
+                <a href="categories.html">Categories</a>
+                <a href="coupons.html">Coupons</a>
+                <a href="../index.html" style="margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">View Store</a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <div class="flex justify-between align-center" style="margin-bottom: 40px;">
+                <h1>Dashboard Overview</h1>
+                <div id="admin-user-info" style="font-weight: 600;">Welcome, Admin</div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px;">
+                <div class="stat-card">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Total Sales</span>
+                    <div class="stat-value" id="stat-sales">₹0</div>
+                    <span style="color: var(--success); font-size: 0.8rem; font-weight: 600;">↑ 12% from last week</span>
+                </div>
+                <div class="stat-card">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Total Orders</span>
+                    <div class="stat-value" id="stat-orders">0</div>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Last 30 days</span>
+                </div>
+                <div class="stat-card">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Active Products</span>
+                    <div class="stat-value" id="stat-products">0</div>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Across 6 categories</span>
+                </div>
+                <div class="stat-card">
+                    <span style="color: var(--text-muted); font-size: 0.9rem;">Custom Enquiries</span>
+                    <div class="stat-value" id="stat-enquiries">0</div>
+                    <span style="color: var(--accent); font-size: 0.8rem; font-weight: 600;">4 Pending review</span>
+                </div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 30px;">
+                <!-- Recent Orders Table -->
+                <div class="stat-card">
+                    <div class="flex justify-between align-center" style="margin-bottom: 20px;">
+                        <h3>Recent Orders</h3>
+                        <a href="orders.html" style="color: var(--accent); font-size: 0.9rem;">View All</a>
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="text-align: left; border-bottom: 1px solid #eee;">
+                                <th style="padding: 12px 0;">Order ID</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-list">
+                            <!-- Orders injected here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Best Sellers List -->
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 20px;">Best Sellers</h3>
+                    <div id="best-sellers-list">
+                        <!-- Best sellers injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import Store from '../js/store.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const products = Store.getProducts();
+            const orders = Store.getOrders();
+            const enquiries = Store.get('CUSTOM_ENQUIRIES');
+
+            const totalSales = orders.reduce((acc, o) => acc + o.total, 0);
+
+            document.getElementById('stat-sales').innerText = `₹${totalSales}`;
+            document.getElementById('stat-orders').innerText = orders.length;
+            document.getElementById('stat-products').innerText = products.filter(p => p.active).length;
+            document.getElementById('stat-enquiries').innerText = enquiries.length;
+
+            renderRecentOrders(orders);
+            renderBestSellers(products);
+        });
+
+        function renderRecentOrders(orders) {
+            const list = document.getElementById('recent-orders-list');
+            list.innerHTML = orders.slice(-5).reverse().map(order => `
+                <tr style="border-bottom: 1px solid #f9f9f9;">
+                    <td style="padding: 15px 0; font-weight: 600;">${order.id}</td>
+                    <td>${order.customer.name}</td>
+                    <td>₹${order.total}</td>
+                    <td><span style="background: ${getStatusColor(order.status)}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">${order.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderBestSellers(products) {
+            const list = document.getElementById('best-sellers-list');
+            list.innerHTML = products.slice(0, 5).map(product => `
+                <div class="flex align-center" style="gap: 15px; margin-bottom: 15px;">
+                    <img src="${product.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                    <div style="flex: 1;">
+                        <div style="font-size: 0.9rem; font-weight: 600;">${product.name}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">₹${product.discountPrice}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'New Order': return '#3395FF';
+                case 'Delivered': return 'var(--success)';
+                case 'Cancelled': return 'var(--error)';
+                default: return 'var(--accent)';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | Bake & Bite</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .account-grid { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
+        .sidebar-link { display: block; padding: 15px 20px; border-radius: 8px; margin-bottom: 5px; font-weight: 600; }
+        .sidebar-link.active { background: var(--primary); color: white; }
+        .order-card { background: white; border-radius: 12px; padding: 25px; margin-bottom: 20px; border: 1px solid var(--glass-border); }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; color: white; }
+    </style>
+</head>
+<body>
+    <div id="header-root"></div>
+
+    <main class="section">
+        <div class="container">
+            <h2 style="margin-bottom: 40px;">My Account</h2>
+
+            <div class="account-grid">
+                <aside>
+                    <div class="glass-card" style="padding: 15px;">
+                        <a href="#" class="sidebar-link active">My Orders</a>
+                        <a href="#" class="sidebar-link">Profile Details</a>
+                        <a href="#" class="sidebar-link">Delivery Addresses</a>
+                        <a href="admin/index.html" class="sidebar-link" style="color: var(--accent); margin-top: 20px; border-top: 1px solid #eee;">Admin Panel</a>
+                    </div>
+                </aside>
+
+                <div id="orders-container">
+                    <h3 style="margin-bottom: 25px;">Order History</h3>
+                    <div id="orders-list">
+                        <!-- Orders injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script type="module">
+        import Store from './js/store.js';
+        import { renderHeader, renderFooter } from './js/components/common.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('header-root').appendChild(renderHeader());
+            document.getElementById('footer-root').appendChild(renderFooter());
+
+            renderUserOrders();
+        });
+
+        function renderUserOrders() {
+            const orders = Store.getOrders();
+            const list = document.getElementById('orders-list');
+
+            if (orders.length === 0) {
+                list.innerHTML = `
+                    <div class="glass-card" style="text-align: center; padding: 60px;">
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">You haven't placed any orders yet.</p>
+                        <a href="products.html" class="btn btn-primary">Shop Now</a>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = orders.reverse().map(order => `
+                <div class="order-card">
+                    <div class="flex justify-between align-center" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                        <div>
+                            <div style="font-weight: 800; color: var(--primary);">Order #${order.id}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">${new Date(order.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                        </div>
+                        <span class="status-badge" style="background: ${getStatusColor(order.status)}">${order.status}</span>
+                    </div>
+                    <div class="flex" style="gap: 40px;">
+                        <div style="flex: 2;">
+                            <h4 style="margin-bottom: 10px; font-family: var(--font-sans); font-size: 0.95rem;">Items</h4>
+                            ${order.items.map(item => `
+                                <div class="flex justify-between" style="margin-bottom: 5px; font-size: 0.9rem;">
+                                    <span>${item.name} x ${item.quantity}</span>
+                                    <span style="font-weight: 600;">₹${item.discountPrice * item.quantity}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="flex: 1; border-left: 1px solid #eee; padding-left: 40px;">
+                            <h4 style="margin-bottom: 10px; font-family: var(--font-sans); font-size: 0.95rem;">Summary</h4>
+                            <div class="flex justify-between" style="font-size: 0.9rem; margin-bottom: 5px;">
+                                <span>Total Paid:</span>
+                                <span style="font-weight: 700;">₹${order.total}</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">
+                                Method: ${order.paymentMethod}<br>
+                                Status: ${order.paymentStatus}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; display: flex; gap: 15px;">
+                        <button class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;">Track Order</button>
+                        <button class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;">Download Invoice</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'New Order': return '#3395FF';
+                case 'Delivered': return 'var(--success)';
+                case 'Cancelled': return 'var(--error)';
+                case 'Preparing': return '#FF9800';
+                default: return 'var(--accent)';
+            }
+        }
+    </script>
+</body>
+</html>

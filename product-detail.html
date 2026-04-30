@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Bake & Bite</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="header-root"></div>
+
+    <main class="section">
+        <div class="container">
+            <div id="product-container" class="flex" style="gap: 60px;">
+                <!-- Product Images -->
+                <div style="flex: 1;">
+                    <div class="glass-card" style="padding: 10px; border-radius: var(--radius-lg);">
+                        <img id="main-image" src="" alt="" style="width: 100%; height: 500px; object-fit: cover; border-radius: var(--radius-md);">
+                    </div>
+                </div>
+
+                <!-- Product Info & Selection -->
+                <div style="flex: 1;">
+                    <div style="margin-bottom: 30px;">
+                        <span id="product-cat" style="color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.9rem;"></span>
+                        <h1 id="product-name" style="font-size: 3rem; margin: 10px 0;"></h1>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div style="display: flex; gap: 2px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFD700" stroke="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <span id="product-rating" style="font-weight: 700;"></span>
+                            </div>
+                            <span style="color: var(--text-muted);">(120+ Reviews)</span>
+                        </div>
+                        <div style="display: flex; align-items: baseline; gap: 15px;">
+                            <span id="product-price" style="font-size: 2rem; font-weight: 800; color: var(--primary);"></span>
+                            <span id="product-old-price" style="text-decoration: line-through; color: var(--text-muted); font-size: 1.2rem;"></span>
+                        </div>
+                    </div>
+
+                    <p id="product-desc" style="margin-bottom: 30px; color: var(--text-muted); line-height: 1.8;"></p>
+
+                    <div class="glass-card" style="padding: 30px;">
+                        <!-- Weight Selection -->
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="margin-bottom: 15px; font-family: var(--font-sans);">Select Weight</h4>
+                            <div class="flex" style="gap: 15px;">
+                                <label class="weight-btn"><input type="radio" name="weight" value="500g" checked> <span>500g</span></label>
+                                <label class="weight-btn"><input type="radio" name="weight" value="1kg"> <span>1kg</span></label>
+                                <label class="weight-btn"><input type="radio" name="weight" value="2kg"> <span>2kg</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Options -->
+                        <div style="display: flex; gap: 40px; margin-bottom: 25px;">
+                            <div>
+                                <h4 style="margin-bottom: 15px; font-family: var(--font-sans);">Options</h4>
+                                <label class="flex align-center" style="gap: 10px; cursor: pointer;">
+                                    <input type="checkbox" id="is-eggless" checked> <span>Eggless</span>
+                                </label>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 15px; font-family: var(--font-sans);">Quantity</h4>
+                                <div class="flex align-center" style="border: 1px solid var(--glass-border); border-radius: var(--radius-sm); overflow: hidden; width: fit-content;">
+                                    <button class="qty-btn" id="qty-minus" style="padding: 8px 15px; border: none; background: transparent; cursor: pointer;">-</button>
+                                    <span id="qty-val" style="padding: 0 15px; font-weight: 700;">1</span>
+                                    <button class="qty-btn" id="qty-plus" style="padding: 8px 15px; border: none; background: transparent; cursor: pointer;">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Details -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                            <div>
+                                <h4 style="margin-bottom: 10px; font-family: var(--font-sans);">Delivery Date</h4>
+                                <input type="date" id="delivery-date" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); outline: none;">
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 10px; font-family: var(--font-sans);">Time Slot</h4>
+                                <select id="time-slot" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); outline: none;">
+                                    <option>10 AM - 1 PM</option>
+                                    <option>1 PM - 4 PM</option>
+                                    <option>4 PM - 7 PM</option>
+                                    <option>7 PM - 10 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Cake Message -->
+                        <div style="margin-bottom: 30px;">
+                            <h4 style="margin-bottom: 10px; font-family: var(--font-sans);">Message on Cake (Optional)</h4>
+                            <input type="text" id="cake-message" placeholder="e.g. Happy Birthday John" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--glass-border); outline: none;">
+                        </div>
+
+                        <div style="display: flex; gap: 20px;">
+                            <button id="btn-add-to-cart" class="btn btn-primary" style="flex: 1; padding: 18px;">Add to Cart</button>
+                            <button id="btn-buy-now" class="btn btn-accent" style="flex: 1; padding: 18px;">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <style>
+        .weight-btn {
+            cursor: pointer;
+        }
+        .weight-btn input {
+            display: none;
+        }
+        .weight-btn span {
+            display: inline-block;
+            padding: 10px 25px;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .weight-btn input:checked + span {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .qty-btn:hover {
+            background: rgba(0,0,0,0.05) !important;
+        }
+    </style>
+
+    <script type="module" src="js/product-detail.js"></script>
+</body>
+</html>
