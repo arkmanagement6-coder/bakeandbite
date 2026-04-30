@@ -58,7 +58,7 @@ export function renderFooter() {
         <div class="container">
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px;">
                 <div>
-                    <h3 style="color: white; margin-bottom: 20px;">Bake & Bite</h3>
+                    <h3 style="color: white; margin-bottom: 20px;">BakeBite</h3>
                     <p style="opacity: 0.8; font-size: 0.9rem;">Freshly baked happiness delivered to your doorstep. We use only the finest ingredients for our cakes and pastries.</p>
                 </div>
                 <div>
@@ -77,19 +77,20 @@ export function renderFooter() {
                         <li style="margin-bottom: 10px;"><a href="terms.html">Terms & Conditions</a></li>
                         <li style="margin-bottom: 10px;"><a href="refund.html">Refund Policy</a></li>
                         <li style="margin-bottom: 10px;"><a href="shipping.html">Shipping Policy</a></li>
+                        <li style="margin-bottom: 10px;"><a href="disclaimer.html">Disclaimer</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 style="color: white; margin-bottom: 20px;">Contact Us</h4>
                     <ul style="opacity: 0.8; font-size: 0.9rem;">
-                        <li style="margin-bottom: 10px;">Email: hello@bakeandbite.com</li>
+                        <li style="margin-bottom: 10px;">Email: bakebite809@gmail.com</li>
                         <li style="margin-bottom: 10px;">Phone: +91 8821885577</li>
                         <li style="margin-bottom: 10px;">Address: 123 Bakery Lane, Sweet City</li>
                     </ul>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); opacity: 0.6; font-size: 0.8rem;">
-                &copy; 2026 Bake & Bite. All rights reserved.
+                &copy; 2026 BakeBite. All rights reserved.
             </div>
         </div>
     `;
