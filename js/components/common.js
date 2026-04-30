@@ -8,7 +8,7 @@ export function renderHeader() {
 
     header.innerHTML = `
         <div class="container nav-container">
-            <a href="index.html" class="logo">Bake & Bite</a>
+            <a href="index.html" class="logo">BakeBite</a>
             
             <nav class="nav-links">
                 <a href="index.html">Home</a>
@@ -84,8 +84,7 @@ export function renderFooter() {
                     <h4 style="color: white; margin-bottom: 20px;">Contact Us</h4>
                     <ul style="opacity: 0.8; font-size: 0.9rem;">
                         <li style="margin-bottom: 10px;">Email: bakebite809@gmail.com</li>
-                        <li style="margin-bottom: 10px;">Phone: +91 8821885577</li>
-                        <li style="margin-bottom: 10px;">Address: 123 Bakery Lane, Sweet City</li>
+                        <li style="margin-bottom: 10px;">Address: 25/172 line no 11 12 patel nagar jeoni mandi agra 282004</li>
                     </ul>
                 </div>
             </div>
